@@ -1,17 +1,27 @@
 package com.okseby.core;
 
+import com.okseby.core.utils.Constants;
 import org.lwjgl.Version;
 
 public class Launcher {
+
+    private static WindowManager window;
+    private static EngineManager engine;
+
     public static void main(String[] args) {
         System.out.println("LWJGL Version: " + Version.getVersion());
 
-        WindowManager window = new WindowManager("Warabi Engine", 1600, 900, false);
-        window.init();
+        window = new WindowManager(Constants.title, 1600, 900, false);
+        engine = new EngineManager();
 
-        while (!window.windowShouldClose())
-            window.update();
+        try {
+            engine.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        window.cleanup();
+    public static WindowManager getWindow() {
+        return window;
     }
 }
