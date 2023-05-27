@@ -1,9 +1,7 @@
 package com.okseby.core.test;
 
-import com.okseby.core.ILogic;
-import com.okseby.core.Launcher;
-import com.okseby.core.RenderManager;
-import com.okseby.core.WindowManager;
+import com.okseby.core.*;
+import com.okseby.core.entity.Model;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -12,16 +10,31 @@ public class TestGame implements ILogic {
     private float color = 0.0f;
 
     private final RenderManager renderer;
+    private final ObjectLoader loader;
     private final WindowManager window;
+
+    private Model model;
 
     public TestGame() {
         renderer = new RenderManager();
         window = Launcher.getWindow();
+        loader = new ObjectLoader();
     }
 
     @Override
     public void init() throws Exception {
         renderer.init();
+
+        float[] vertices = {
+                -0.5f, 0.5f, 0f,
+                -0.5f, -0.5f, 0f,
+                0.5f, -0.5f, 0f,
+                0.5f, -0.5f, 0f,
+                0.5f, 0.5f, 0f,
+                -0.5f, 0.5f, 0f
+        };
+
+        model = loader.loadModel(vertices);
     }
 
     @Override
@@ -51,11 +64,12 @@ public class TestGame implements ILogic {
         }
 
         window.setClearColor(color, color, color, 0.0f);
-        renderer.clear();
+        renderer.render(model);
     }
 
     @Override
     public void cleanup() {
         renderer.cleanup();
+        loader.cleanup();
     }
 }
