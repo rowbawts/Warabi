@@ -1,6 +1,6 @@
 # Warabi
 
-This is a game engine, that doesn't make games.... or engines.
+This is a game engine, that doesn't make games.....
 
 <sub>......and its written in Java, sorry.</sub>
 
