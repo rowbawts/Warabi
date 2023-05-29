@@ -2,12 +2,13 @@ package com.okseby.core;
 
 import com.okseby.core.test.TestGame;
 import com.okseby.core.utils.Constants;
+import lombok.Getter;
 import org.lwjgl.Version;
 
 public class Launcher {
 
-    private static WindowManager window;
-    private static TestGame game;
+    @Getter private static WindowManager window;
+    @Getter private static TestGame game;
 
     public static void main(String[] args) {
         System.out.println("LWJGL Version: " + Version.getVersion());
@@ -22,13 +23,5 @@ public class Launcher {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static WindowManager getWindow() {
-        return window;
-    }
-
-    public static TestGame getGame() {
-        return game;
     }
 }

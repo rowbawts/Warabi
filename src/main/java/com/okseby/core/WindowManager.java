@@ -1,5 +1,7 @@
 package com.okseby.core;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -13,20 +15,17 @@ public class WindowManager {
     public static final float Z_NEAR = 0.01f;
     public static final float Z_FAR = 1000f;
 
-    private String title;
+    @Getter private long window;
+    @Getter private int width, height;
+    @Getter @Setter private String title;
+    @Getter @Setter private boolean resizeable, vsync;
+    @Getter private final Matrix4f projectionMatrix;
 
-    private int width, height;
-    private long window;
-
-    private boolean resizeable, vSync;
-
-    private final Matrix4f projectionMatrix;
-
-    public WindowManager(String title, int width, int height, boolean vSync) {
+    public WindowManager(String title, int width, int height, boolean vsync) {
         this.title = title;
         this.width = width;
         this.height = height;
-        this.vSync = vSync;
+        this.vsync = vsync;
 
         projectionMatrix = new Matrix4f();
     }
@@ -73,12 +72,14 @@ public class WindowManager {
             GLFW.glfwMaximizeWindow(window);
         else {
             GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+
+            assert vidMode != null;
             GLFW.glfwSetWindowPos(window, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
         }
 
         GLFW.glfwMakeContextCurrent(window);
 
-        if (isvSync())
+        if (isVsync())
             GLFW.glfwSwapInterval(1);
 
         GLFW.glfwShowWindow(window);
@@ -111,46 +112,6 @@ public class WindowManager {
 
     public boolean windowShouldClose() {
         return GLFW.glfwWindowShouldClose(window);
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        GLFW.glfwSetWindowTitle(window, title);
-    }
-
-    public boolean isResizeable() {
-        return resizeable;
-    }
-
-    public boolean isvSync() {
-        return vSync;
-    }
-
-    public void setvSync(boolean vSync) {
-        this.vSync = vSync;
-    }
-
-    public void setResizeable(boolean resizeable) {
-        this.resizeable = resizeable;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public long getWindow() {
-        return window;
-    }
-
-    public Matrix4f getProjectionMatrix() {
-        return projectionMatrix;
     }
 
     public Matrix4f updateProjectionMatrix() {
