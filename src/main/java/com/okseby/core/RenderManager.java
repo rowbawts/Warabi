@@ -31,6 +31,7 @@ public class RenderManager {
         GL30.glBindVertexArray(model.getId());
         GL20.glEnableVertexAttribArray(0);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, model.getVertexCount());
+
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
 
