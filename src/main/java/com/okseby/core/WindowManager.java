@@ -17,9 +17,10 @@ public class WindowManager {
 
     @Getter private long window;
     @Getter private int width, height;
+    @Getter private final Matrix4f projectionMatrix;
+
     @Getter @Setter private String title;
     @Getter @Setter private boolean resizeable, vsync;
-    @Getter private final Matrix4f projectionMatrix;
 
     public WindowManager(String title, int width, int height, boolean vsync) {
         this.title = title;

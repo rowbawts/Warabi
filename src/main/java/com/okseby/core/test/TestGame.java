@@ -2,6 +2,7 @@ package com.okseby.core.test;
 
 import com.okseby.core.*;
 import com.okseby.core.entity.Model;
+import com.okseby.core.entity.Texture;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -29,9 +30,7 @@ public class TestGame implements ILogic {
                 -0.5f, 0.5f, 0f,
                 -0.5f, -0.5f, 0f,
                 0.5f, -0.5f, 0f,
-                0.5f, -0.5f, 0f,
                 0.5f, 0.5f, 0f,
-                -0.5f, 0.5f, 0f
         };
 
         int[] indices = {
@@ -39,7 +38,15 @@ public class TestGame implements ILogic {
                 3, 1, 2
         };
 
-        model = loader.loadModel(vertices, indices);
+        float[] textureCoordinates = {
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
+        };
+
+        model = loader.loadModel(vertices, textureCoordinates, indices);
+        model.setTexture(new Texture(loader.loadTexture("textures/grassblock.png")));
     }
 
     @Override
