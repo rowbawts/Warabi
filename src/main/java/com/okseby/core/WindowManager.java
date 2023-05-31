@@ -11,9 +11,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
 public class WindowManager {
-    public static final float FOV = (float) Math.toRadians(60);
-    public static final float Z_NEAR = 0.01f;
-    public static final float Z_FAR = 1000f;
+    public static final float fov = (float) Math.toRadians(60);
+    public static final float zNear = 0.01f;
+    public static final float zFar = 1000f;
 
     @Getter private String title;
     @Getter private long window;
@@ -90,8 +90,9 @@ public class WindowManager {
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_STENCIL_TEST);
+        /* Culling disabled as it stops faces from rendering that should be
         GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glCullFace(GL11.GL_BACK);
+        GL11.glCullFace(GL11.GL_BACK); */
     }
 
     public void update() {
@@ -121,11 +122,11 @@ public class WindowManager {
 
     public Matrix4f updateProjectionMatrix() {
         float aspectRatio = (float) width / height;
-        return projectionMatrix.setPerspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+        return projectionMatrix.setPerspective(fov, aspectRatio, zNear, zFar);
     }
 
     public Matrix4f updateProjectionMatrix(Matrix4f matrix) {
         float aspectRatio = (float) width / height;
-        return matrix.setPerspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+        return matrix.setPerspective(fov, aspectRatio, zNear, zFar);
     }
 }

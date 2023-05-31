@@ -5,11 +5,11 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 public class EngineManager {
-    public static final long NANOSECOND = 1000000000;
-    public static final float FRAMERATE = 1000;
+    public static final long nanosecond = 1000000000;
+    public static final float framerate = 1000;
 
     private static int fps;
-    private static float frametime = 1.0f / FRAMERATE;
+    private static float frametime = 1.0f / framerate;
 
     private boolean isRunning;
 
@@ -49,7 +49,7 @@ public class EngineManager {
             long passedTime = startTime - lastTime;
 
             lastTime = startTime;
-            unprocessedTime += passedTime / (double) NANOSECOND;
+            unprocessedTime += passedTime / (double) nanosecond;
             frameCounter += passedTime;
 
             input();
@@ -61,7 +61,7 @@ public class EngineManager {
                 if (window.windowShouldClose())
                     stop();
 
-                if (frameCounter >= NANOSECOND) {
+                if (frameCounter >= nanosecond) {
                     setFps(frames);
 
                     window.setTitle(Constants.title + " - FPS: " + getFps());

@@ -13,7 +13,7 @@ public class Launcher {
     public static void main(String[] args) {
         System.out.println("LWJGL Version: " + Version.getVersion());
 
-        window = new WindowManager(Constants.title, 1600, 900, false);
+        window = new WindowManager(Constants.title, 1600, 900, true);
         game = new TestGame();
 
         EngineManager engine = new EngineManager();
