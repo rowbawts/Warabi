@@ -1,8 +1,10 @@
 package com.okseby.core.test;
 
 import com.okseby.core.*;
+import com.okseby.core.entity.Entity;
 import com.okseby.core.entity.Model;
 import com.okseby.core.entity.Texture;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -14,7 +16,7 @@ public class TestGame implements ILogic {
     private final ObjectLoader loader;
     private final WindowManager window;
 
-    private Model model;
+    private Entity entity;
 
     public TestGame() {
         renderer = new RenderManager();
@@ -45,8 +47,10 @@ public class TestGame implements ILogic {
                 1, 0
         };
 
-        model = loader.loadModel(vertices, textureCoordinates, indices);
+        Model model = loader.loadModel(vertices, textureCoordinates, indices);
         model.setTexture(new Texture(loader.loadTexture("res/textures/grassblock.png")));
+
+        entity = new Entity(model, new Vector3f(1, 0, 0), new Vector3f(0, 0, 0), 1);
     }
 
     @Override
@@ -66,6 +70,10 @@ public class TestGame implements ILogic {
             color = 1.0f;
         else if (color <= 0)
             color = 0.0f;
+
+        if (entity.getPosition().x < -1.5f)
+            entity.getPosition().x = 1.5f;
+        entity.getPosition().x -= 0.01f;
     }
 
     @Override
@@ -76,7 +84,7 @@ public class TestGame implements ILogic {
         }
 
         window.setClearColor(color, color, color, 0.0f);
-        renderer.render(model);
+        renderer.render(entity);
     }
 
     @Override
