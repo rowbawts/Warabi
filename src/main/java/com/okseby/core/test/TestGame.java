@@ -4,13 +4,13 @@ import com.okseby.core.*;
 import com.okseby.core.entity.Entity;
 import com.okseby.core.entity.Model;
 import com.okseby.core.entity.Texture;
+import com.okseby.core.utils.Constants;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 public class TestGame implements ILogic {
-    private static final float cameraMoveSpeed = 0.05f;
-
     private final RenderManager renderer;
     private final ObjectLoader loader;
     private final WindowManager window;
@@ -111,9 +111,15 @@ public class TestGame implements ILogic {
     }
 
     @Override
-    public void update() {
-        camera.movePosition(cameraInc.x * cameraMoveSpeed, cameraInc.y * cameraMoveSpeed, cameraInc.z * cameraMoveSpeed);
-        entity.incrementRotation(0.0f, 0.5f, 0.0f);
+    public void update(float interval, MouseInput mouseInput) {
+        camera.movePosition(cameraInc.x * Constants.cameraMoveSpeed, cameraInc.y * Constants.cameraMoveSpeed, cameraInc.z * Constants.cameraMoveSpeed);
+
+        if (mouseInput.isRightButtonPressed()) {
+            Vector2f rotationVector = mouseInput.getDisplayVector();
+            camera.moveRotation(rotationVector.x * Constants.mouseSensitivity, rotationVector.y * Constants.mouseSensitivity, 0);
+        }
+
+        entity.moveRotation(0.0f, 0.5f, 0.0f);
     }
 
     @Override

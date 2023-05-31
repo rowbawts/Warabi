@@ -1,5 +1,6 @@
 package com.okseby.core;
 
+import com.okseby.core.utils.Constants;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Matrix4f;
@@ -11,10 +12,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
 public class WindowManager {
-    public static final float fov = (float) Math.toRadians(60);
-    public static final float zNear = 0.01f;
-    public static final float zFar = 1000f;
-
     @Getter private String title;
     @Getter private long window;
     @Getter private int width, height;
@@ -122,11 +119,11 @@ public class WindowManager {
 
     public Matrix4f updateProjectionMatrix() {
         float aspectRatio = (float) width / height;
-        return projectionMatrix.setPerspective(fov, aspectRatio, zNear, zFar);
+        return projectionMatrix.setPerspective(Constants.fov, aspectRatio, Constants.zNear, Constants.zFar);
     }
 
     public Matrix4f updateProjectionMatrix(Matrix4f matrix) {
         float aspectRatio = (float) width / height;
-        return matrix.setPerspective(fov, aspectRatio, zNear, zFar);
+        return matrix.setPerspective(Constants.fov, aspectRatio, Constants.zNear, Constants.zFar);
     }
 }

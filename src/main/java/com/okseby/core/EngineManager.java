@@ -10,20 +10,24 @@ public class EngineManager {
 
     private static int fps;
     private static float frametime = 1.0f / framerate;
+    public static float currentFrameTime = 0;
 
     private boolean isRunning;
 
-    private WindowManager window;
+    private WindowManager windowManager;
+    private MouseInput mouseInput;
     private GLFWErrorCallback errorCallback;
     private ILogic gameLogic;
 
     private void init() throws Exception {
         GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
-        window = Launcher.getWindow();
+        windowManager = Launcher.getWindow();
         gameLogic = Launcher.getGame();
+        mouseInput = new MouseInput();
 
-        window.init();
+        windowManager.init();
         gameLogic.init();
+        mouseInput.init();
     }
 
     public void start() throws Exception {
@@ -58,13 +62,14 @@ public class EngineManager {
                 render = true;
                 unprocessedTime -= frametime;
 
-                if (window.windowShouldClose())
+                if (windowManager.windowShouldClose())
                     stop();
 
                 if (frameCounter >= nanosecond) {
                     setFps(frames);
 
-                    window.setTitle(Constants.title + " - FPS: " + getFps());
+                    currentFrameTime = 1.0f / fps;
+                    windowManager.setTitle(Constants.title + " - FPS: " + getFps());
 
                     frames = 0;
                     frameCounter = 0;
@@ -72,7 +77,7 @@ public class EngineManager {
             }
 
             if (render) {
-                update();
+                update(frametime);
                 render();
                 frames++;
             }
@@ -88,20 +93,21 @@ public class EngineManager {
     }
 
     private void input() {
+        mouseInput.input();
         gameLogic.input();
     }
 
     private void render() {
         gameLogic.render();
-        window.update();
+        windowManager.update();
     }
 
-    private void update() {
-        gameLogic.update();
+    private void update(float interval) {
+        gameLogic.update(interval, mouseInput);
     }
 
     private void cleanup() {
-        window.cleanup();
+        windowManager.cleanup();
         gameLogic.cleanup();
 
         errorCallback.free();

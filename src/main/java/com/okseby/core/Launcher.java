@@ -6,7 +6,6 @@ import lombok.Getter;
 import org.lwjgl.Version;
 
 public class Launcher {
-
     @Getter private static WindowManager window;
     @Getter private static TestGame game;
 

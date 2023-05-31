@@ -15,7 +15,7 @@ public class Entity {
         this.scale = scale;
     }
 
-    public void incrementPosition(float x, float y, float z) {
+    public void movePosition(float x, float y, float z) {
         this.position.x += x;
         this.position.y += y;
         this.position.z += z;
@@ -27,7 +27,7 @@ public class Entity {
         this.position.z = z;
     }
 
-    public void incrementRotation(float x, float y, float z) {
+    public void moveRotation(float x, float y, float z) {
         this.rotation.x += x;
         this.rotation.y += y;
         this.rotation.z += z;
