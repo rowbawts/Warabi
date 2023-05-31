@@ -15,11 +15,11 @@ public class WindowManager {
     public static final float Z_NEAR = 0.01f;
     public static final float Z_FAR = 1000f;
 
+    @Getter private String title;
     @Getter private long window;
     @Getter private int width, height;
     @Getter private final Matrix4f projectionMatrix;
 
-    @Getter @Setter private String title;
     @Getter @Setter private boolean resizeable, vsync;
 
     public WindowManager(String title, int width, int height, boolean vsync) {
@@ -113,6 +113,10 @@ public class WindowManager {
 
     public boolean windowShouldClose() {
         return GLFW.glfwWindowShouldClose(window);
+    }
+
+    public void setTitle(String title) {
+        GLFW.glfwSetWindowTitle(window, title);
     }
 
     public Matrix4f updateProjectionMatrix() {
