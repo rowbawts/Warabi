@@ -153,9 +153,9 @@ public class ObjectLoader {
             IntBuffer h = stack.mallocInt(1);
             IntBuffer c = stack.mallocInt(1);
 
-            buffer = STBImage.stbi_load(fileName, w, h, c, 4);
+            buffer = STBImage.stbi_load(ObjectLoader.class.getResource(fileName).getFile(), w, h, c, 4);
             if (buffer == null)
-                throw new Exception("Image File " + fileName + " not loaded " + STBImage.stbi_failure_reason());
+                throw new Exception("Image File: '" + fileName + "' not loaded, error: " + STBImage.stbi_failure_reason());
 
             width = w.get();
             height = h.get();
