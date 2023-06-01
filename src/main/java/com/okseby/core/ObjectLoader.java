@@ -62,9 +62,9 @@ public class ObjectLoader {
                     break;
                 case "f":
                     // vertex faces
-                    processFaces(tokens[1], faces);
-                    processFaces(tokens[2], faces);
-                    processFaces(tokens[3], faces);
+                    for (int i = 1; i < tokens.length; i++) {
+                        processFaces(tokens[i], faces);
+                    }
                     break;
                 default:
                     break;
