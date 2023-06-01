@@ -33,7 +33,7 @@ public class TestGame implements ILogic {
         renderer.init();
 
         Model model = loader.loadOBJModel("/models/cube.obj");
-        model.setTexture(new Texture(loader.loadTexture("/textures/chris.png")));
+        model.setTexture(new Texture(loader.loadTexture("/textures/grassblock.jpg")));
 
         entity = new Entity(model, new Vector3f(0, 0, -5), new Vector3f(0, 0, 0), 1);
     }
