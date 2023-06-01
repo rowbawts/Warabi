@@ -2,6 +2,9 @@ package com.okseby.core;
 
 import com.okseby.core.entity.Model;
 import com.okseby.core.utils.Utils;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -20,6 +23,117 @@ public class ObjectLoader {
     private List<Integer> vbos = new ArrayList<>();
     private List<Integer> textures = new ArrayList<>();
 
+    public Model loadOBJModel(String fileName) {
+        List<String> lines = Utils.readAllLines(fileName);
+
+        List<Vector3f> vertices = new ArrayList<>();
+        List<Vector3f> normals = new ArrayList<>();
+        List<Vector2f> textures = new ArrayList<>();
+        List<Vector3i> faces = new ArrayList<>();
+
+        for (String line : lines) {
+            String[] tokens = line.split("\\s+");
+            switch (tokens[0]) {
+                case "v":
+                    // vertices
+                    Vector3f verticesVector = new Vector3f(
+                            Float.parseFloat(tokens[1]),
+                            Float.parseFloat(tokens[2]),
+                            Float.parseFloat(tokens[3])
+                    );
+                    vertices.add(verticesVector);
+                    break;
+                case "vn":
+                    // vertex normals
+                    Vector3f normalsVector = new Vector3f(
+                            Float.parseFloat(tokens[1]),
+                            Float.parseFloat(tokens[2]),
+                            Float.parseFloat(tokens[3])
+                    );
+                    normals.add(normalsVector);
+                    break;
+                case "vt":
+                    // vertex textures
+                    Vector2f texturesVector = new Vector2f(
+                            Float.parseFloat(tokens[1]),
+                            Float.parseFloat(tokens[2])
+                    );
+                    textures.add(texturesVector);
+                    break;
+                case "f":
+                    // vertex faces
+                    processFaces(tokens[1], faces);
+                    processFaces(tokens[2], faces);
+                    processFaces(tokens[3], faces);
+                    break;
+                default:
+                    break;
+
+            }
+        }
+        List<Integer> indices = new ArrayList<>();
+        float[] verticesArray = new float[vertices.size() * 3];
+
+        int i = 0;
+        for (Vector3f position : vertices) {
+            verticesArray[i * 3] = position.x;
+            verticesArray[i * 3 + 1] = position.y;
+            verticesArray[i * 3 + 2] = position.z;
+            i++;
+        }
+
+        float[] textureCoordinatesArray = new float[vertices.size() * 2];
+        float[] normalArray = new float[vertices.size() * 3];
+
+        for (Vector3i face : faces) {
+            processVertexes(face.x, face.y, face.z, textures, normals, indices, textureCoordinatesArray, normalArray);
+        }
+
+        int[] indicesArray = indices.stream().mapToInt((Integer v) -> v).toArray();
+
+        return loadModel(verticesArray, textureCoordinatesArray, indicesArray);
+    }
+
+    private static void processVertexes(int position, int textureCoordinate, int normal, List<Vector2f> textureCoordinateList, List<Vector3f> normalList, List<Integer> indicesList, float[] textureCoordinatesArray, float[] normalArray) {
+        indicesList.add(position);
+
+        if (textureCoordinate >= 0) {
+            Vector2f textureCoordinatesVector = textureCoordinateList.get(textureCoordinate);
+
+            textureCoordinatesArray[position * 2] = textureCoordinatesVector.x;
+            textureCoordinatesArray[position * 2 + 1] = 1 - textureCoordinatesVector.y;
+        }
+
+        if (normal >= 0) {
+            Vector3f normalVector = normalList.get(normal);
+
+            normalArray[position * 3] = normalVector.x;
+            normalArray[position * 3 + 1] = normalVector.y;
+            normalArray[position * 3 + 2] = normalVector.z;
+        }
+    }
+
+    private static void processFaces(String token, List<Vector3i> faces) {
+        String[] lineToken = token.split("/");
+
+        int length = lineToken.length;
+        int position = -1, coordinates = -1, normal = -1;
+
+        position = Integer.parseInt(lineToken[0]) - 1;
+
+        if (length > 1) {
+            String textureCoordinates = lineToken[1];
+            coordinates = textureCoordinates.length() > 0 ? Integer.parseInt(textureCoordinates) - 1 : -1;
+
+            if (length > 2)
+                normal = Integer.parseInt(lineToken[2]) - 1;
+        }
+
+        Vector3i facesVector = new Vector3i(position, coordinates, normal);
+
+        faces.add(facesVector);
+    }
+
     public Model loadModel(float[] vertices, float[] textureCoordinates, int[] indices) {
         int id = createVAO();
         storeIndicesBuffer(indices);
@@ -30,7 +144,7 @@ public class ObjectLoader {
         return new Model(id, indices.length);
     }
 
-    public int loadTexture(String filename) throws Exception {
+    public int loadTexture(String fileName) throws Exception {
         int width, height;
         ByteBuffer buffer;
 
@@ -39,9 +153,9 @@ public class ObjectLoader {
             IntBuffer h = stack.mallocInt(1);
             IntBuffer c = stack.mallocInt(1);
 
-            buffer = STBImage.stbi_load(filename, w, h, c, 4);
+            buffer = STBImage.stbi_load(fileName, w, h, c, 4);
             if (buffer == null)
-                throw new Exception("Image File " + filename + " not loaded " + STBImage.stbi_failure_reason());
+                throw new Exception("Image File " + fileName + " not loaded " + STBImage.stbi_failure_reason());
 
             width = w.get();
             height = h.get();

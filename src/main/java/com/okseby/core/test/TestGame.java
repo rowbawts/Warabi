@@ -32,62 +32,7 @@ public class TestGame implements ILogic {
     public void init() throws Exception {
         renderer.init();
 
-        float[] vertices = {
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-        };
-
-        float[] textureCoordinates = {
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                0.0f, 0.0f,
-                0.5f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 1.0f,
-                0.5f, 1.0f,
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.0f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                1.0f, 0.0f,
-                0.5f, 0.5f,
-                1.0f, 0.5f,
-        };
-
-        int[] indices = {
-                0, 1, 3, 3, 1, 2,
-                8, 10, 11, 9, 8, 11,
-                12, 13, 7, 5, 12, 7,
-                14, 15, 6, 4, 14, 6,
-                16, 18, 19, 17, 16, 19,
-                4, 6, 7, 5, 4, 7,
-        };
-
-        Model model = loader.loadModel(vertices, textureCoordinates, indices);
+        Model model = loader.loadOBJModel("/models/bunny.obj");
         model.setTexture(new Texture(loader.loadTexture("res/textures/grassblock.jpg")));
 
         entity = new Entity(model, new Vector3f(0, 0, -5), new Vector3f(0, 0, 0), 1);
