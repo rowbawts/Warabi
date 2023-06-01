@@ -33,7 +33,7 @@ public class TestGame implements ILogic {
         renderer.init();
 
         Model model = loader.loadOBJModel("/models/cube.obj");
-        model.setTexture(new Texture(loader.loadTexture("/textures/grassblock.jpg")));
+        model.setTexture(new Texture(loader.loadTexture("/textures/bryan.jpg")));
 
         entity = new Entity(model, new Vector3f(0, 0, -5), new Vector3f(0, 0, 0), 1);
     }
@@ -44,14 +44,14 @@ public class TestGame implements ILogic {
         if (window.isKeyPressed(GLFW.GLFW_KEY_W))
             cameraInc.z = -1;
         if (window.isKeyPressed(GLFW.GLFW_KEY_A))
-            cameraInc.x = 1;
+            cameraInc.x = -1;
         if (window.isKeyPressed(GLFW.GLFW_KEY_S))
             cameraInc.z = 1;
         if (window.isKeyPressed(GLFW.GLFW_KEY_D))
-            cameraInc.x = -1;
-        if (window.isKeyPressed(GLFW.GLFW_KEY_Z))
+            cameraInc.x = 1;
+        if (window.isKeyPressed(GLFW.GLFW_KEY_SPACE))
             cameraInc.y = 1;
-        if (window.isKeyPressed(GLFW.GLFW_KEY_X))
+        if (window.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT))
             cameraInc.y = -1;
     }
 
